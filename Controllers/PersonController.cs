@@ -17,11 +17,19 @@ namespace person_management_system.Controllers
 
 
         [HttpPost]
-        public async Task<PersonModel> AddPerson(PersonModel person)
+        public async Task<IActionResult> AddPerson(PersonModel person)
         {
-            var createdPerson = await _context.Persons.AddAsync(person);
-            await _context.SaveChangesAsync();
-            return createdPerson.Entity;
+            try
+            {
+                person.Id = Guid.NewGuid();
+                _context.Persons.Add(person);
+                await _context.SaveChangesAsync();
+                return Ok(person);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
