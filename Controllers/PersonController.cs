@@ -2,16 +2,26 @@ namespace person_management_system.Controllers
 {
 
     using Microsoft.AspNetCore.Mvc;
+    using person_management_system.Models;
 
     [Route("api/[controller]")]
     [ApiController]
     public class PersonController : ControllerBase
     {
-        [HttpGet]
-        public async Task<IActionResult> Get()
-        {
 
-            return Ok();
+        private readonly AppDbContext _context;
+        public PersonController(AppDbContext context)
+        {
+            _context = context;
+        }
+
+
+        [HttpPost]
+        public async Task<PersonModel> AddPerson(PersonModel person)
+        {
+            var createdPerson = await _context.Persons.AddAsync(person);
+            await _context.SaveChangesAsync();
+            return createdPerson.Entity;
         }
     }
 }
