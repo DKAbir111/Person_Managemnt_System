@@ -2,6 +2,7 @@ namespace person_management_system.Controllers
 {
 
     using Microsoft.AspNetCore.Mvc;
+    using person_management_system.DTOs;
     using person_management_system.Models;
 
     [Route("api/[controller]")]
@@ -17,11 +18,17 @@ namespace person_management_system.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddPerson(PersonModel person)
+        public async Task<IActionResult> AddPerson(PersonCreateDto personData)
         {
             try
             {
-                person.Id = Guid.NewGuid();
+                var person = new Person
+                {
+                    FirstName = personData.FirstName,
+                    LastName = personData.LastName,
+                    BirthDate = personData.BirthDate
+                };
+
                 _context.Persons.Add(person);
                 await _context.SaveChangesAsync();
                 return Ok(person);
