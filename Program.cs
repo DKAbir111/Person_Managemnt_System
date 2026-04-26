@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using person_management_system.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,11 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-// ✅ Swagger services
+// Swagger services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-// ✅ DB
+builder.Services.AddScoped<PersonService>();
+// DB
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 

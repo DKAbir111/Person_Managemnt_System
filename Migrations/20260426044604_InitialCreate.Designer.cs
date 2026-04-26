@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace person_management_system.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260425192010_InitialCreate")]
+    [Migration("20260426044604_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,13 +24,16 @@ namespace person_management_system.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("person_management_system.Models.PersonModel", b =>
+            modelBuilder.Entity("person_management_system.Models.Person", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("BirthDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FirstName")

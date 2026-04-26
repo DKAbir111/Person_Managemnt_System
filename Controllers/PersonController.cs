@@ -4,39 +4,35 @@ namespace person_management_system.Controllers
     using Microsoft.AspNetCore.Mvc;
     using person_management_system.DTOs;
     using person_management_system.Models;
+    using person_management_system.Services;
 
     [Route("api/[controller]")]
     [ApiController]
     public class PersonController : ControllerBase
     {
-
-        private readonly AppDbContext _context;
-        public PersonController(AppDbContext context)
+        private readonly PersonService _personService;
+        public PersonController(PersonService personService)
         {
-            _context = context;
+            _personService = personService;
         }
 
 
+        //  create person
         [HttpPost]
         public async Task<IActionResult> AddPerson(PersonCreateDto personData)
         {
             try
             {
-                var person = new Person
-                {
-                    FirstName = personData.FirstName,
-                    LastName = personData.LastName,
-                    BirthDate = personData.BirthDate
-                };
-
-                _context.Persons.Add(person);
-                await _context.SaveChangesAsync();
-                return Ok(person);
+                var result = await _personService.AddPersonAsync(personData);
+                return Ok(result);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
+
+
     }
 }
